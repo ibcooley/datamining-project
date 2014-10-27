@@ -1,9 +1,14 @@
 package Algorithms;
 
+import AlgorithmObjects.Shared.Itemset;
+import AlgorithmObjects.Shared.Order;
 import au.com.bytecode.opencsv.CSVReader;
+
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 public class Apriori {
 
@@ -14,6 +19,39 @@ public class Apriori {
     public Apriori(List<Order> orders, int minSupport) {
         this.orders = orders;
         this.minSupport = minSupport;
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("Hello World!");
+
+        CSVReader reader = new CSVReader(new FileReader("./in/walmart.csv"));
+        String[] nextLine;
+        nextLine = reader.readNext(); // header
+
+        List<Order> orders = new ArrayList<Order>();
+        Order currentOrder = new Order();
+        while ((nextLine = reader.readNext()) != null) {
+            // 1 - Order ID
+            // 18 - Product Sub-Category
+            // 19 - Product Name
+            // System.out.println(nextLine[1] + " " + nextLine[19]);
+
+            String orderID = nextLine[1];
+            String productSubCategory = nextLine[18];
+            if (!orderID.equalsIgnoreCase(currentOrder.getOrderID())) {
+                if (currentOrder.getOrderID().length() > 0) {
+                    orders.add(currentOrder);
+                }
+                currentOrder = new Order();
+                currentOrder.setOrderID(orderID);
+            }
+
+            // Always add the product to the item set
+            currentOrder.getItemSet().add(productSubCategory);
+        }
+
+        Apriori apriori = new Apriori(orders, 5);
+        apriori.start();
     }
 
     public void start() {
@@ -129,57 +167,24 @@ public class Apriori {
     private void getSubsets(List<String> superSet, int k, int idx, List<String> current, List<List<String>> solution) {
         //successful stop clause
         if (current.size() == k) {
-            solution.add(new ArrayList(current));
+            solution.add(new ArrayList<String>(current));
             return;
         }
-        //unseccessful stop clause
+        //unsuccessful stop clause
         if (idx == superSet.size()) return;
         String x = superSet.get(idx);
         current.add(x);
         //"guess" x is in the subset
-        getSubsets(superSet, k, idx+1, current, solution);
+        getSubsets(superSet, k, idx + 1, current, solution);
         current.remove(x);
         //"guess" x is not in the subset
-        getSubsets(superSet, k, idx+1, current, solution);
+        getSubsets(superSet, k, idx + 1, current, solution);
     }
 
     private List<List<String>> getSubsets(List<String> superSet, int k) {
-        List<List<String>> res = new ArrayList();
+        List<List<String>> res = new ArrayList<List<String>>();
         getSubsets(superSet, k, 0, new ArrayList<String>(), res);
         return res;
-    }
-
-    public static void main(String[] args) throws IOException {
-        System.out.println("Hello World!");
-
-        CSVReader reader = new CSVReader(new FileReader("./in/walmart.csv"));
-        String [] nextLine;
-        nextLine = reader.readNext(); // header
-
-        List<Order> orders = new ArrayList<Order>();
-        Order currentOrder = new Order();
-        while ((nextLine = reader.readNext()) != null) {
-            // 1 - Order ID
-            // 18 - Product Sub-Category
-            // 19 - Product Name
-            // System.out.println(nextLine[1] + " " + nextLine[19]);
-
-            String orderID = nextLine[1];
-            String productSubCategory = nextLine[18];
-            if (!orderID.equalsIgnoreCase(currentOrder.getOrderID())) {
-                if (currentOrder.getOrderID().length() > 0) {
-                    orders.add(currentOrder);
-                }
-                currentOrder = new Order();
-                currentOrder.setOrderID(orderID);
-            }
-
-            // Always add the product to the item set
-            currentOrder.getItemSet().add(productSubCategory);
-        }
-
-        Apriori apriori = new Apriori(orders, 5);
-        apriori.start();
     }
 }
 

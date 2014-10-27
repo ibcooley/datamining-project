@@ -1,9 +1,10 @@
-package Algorithms;
+package AlgorithmObjects.Shared;
 
 /**
  * Created by Ben on 10/25/2014.
+ * RowColumnPair
  */
-class RowColumnPair {
+public class RowColumnPair {
 
     private final String column;
     private final String row;

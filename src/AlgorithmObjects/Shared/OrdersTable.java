@@ -1,4 +1,4 @@
-package Algorithms;
+package AlgorithmObjects.Shared;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by Ben on 10/25/2014.
+ * OrdersTable
  */
 public class OrdersTable extends AbstractTableModel {
 

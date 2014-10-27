@@ -1,4 +1,4 @@
-package Algorithms;
+package AlgorithmObjects.Shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,15 +6,16 @@ import java.util.List;
 
 /**
  * Created by Craig on 10/24/2014.
+ * Order
  */
 public class Order implements Serializable {
+    private String orderID;
+    private List<String> itemSet;
+
     public Order() {
         orderID = "";
         itemSet = new ArrayList<String>();
     }
-
-    private String orderID;
-    private List<String> itemSet;
 
     public String getOrderID() {
         return orderID;
