@@ -1,4 +1,4 @@
-package Algorithms;
+package AlgorithmObjects.Shared;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,14 +6,15 @@ import java.util.List;
 
 /**
  * Created by Craig on 10/24/2014.
+ * Itemset
  */
 public class Itemset<T> implements Serializable {
+    private List<T> itemSet;
+    private int supportCount;
+
     public Itemset() {
         itemSet = new ArrayList<T>();
     }
-
-    private List<T> itemSet;
-    private int supportCount;
 
     public List<T> getItemSet() {
         return itemSet;
