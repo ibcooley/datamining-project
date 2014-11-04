@@ -31,4 +31,9 @@ public class RowColumnPair {
         result = 31 * result + row.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "[" + column + " = " + row + "]";
+    }
 }

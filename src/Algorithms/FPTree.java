@@ -16,7 +16,7 @@ import java.util.Set;
  * Created by Ben on 10/22/2014.
  * FPTree
  */
-class FPTree {
+public class FPTree {
 
     private final OrdersTable initial_orders;
     private final int minSupport;
@@ -33,7 +33,7 @@ class FPTree {
         Map<RowColumnPair, Integer> attributeCount = new HashMap<RowColumnPair, Integer>();
         for (int i = 0; i < initial_orders.getColumnCount(); i++) {
             for (int j = 0; j < initial_orders.getRowCount(); j++) {
-                RowColumnPair pair = new RowColumnPair(initial_orders.getColumnName(i), initial_orders.getValueAt(i, j));
+                RowColumnPair pair = new RowColumnPair(initial_orders.getColumnName(i), initial_orders.getValueAt(j, i));
                 Integer count = 0;
                 if (attributeCount.containsKey(pair)) {
                     count = attributeCount.get(pair);
@@ -43,11 +43,13 @@ class FPTree {
             }
         }
 
-        RowColumnPair[] pairs = (RowColumnPair[]) attributeCount.keySet().toArray();
+        RowColumnPair[] pairs = attributeCount.keySet().toArray(new RowColumnPair[attributeCount.keySet().size()]);
         for (int i = 0; i < pairs.length; i++) {
-            if (attributeCount.get(pairs[i]) < minSupport) {
-                attributeCount.remove(pairs[i]);
-                i--;
+            if (attributeCount.containsKey(pairs[i])) {
+                if (attributeCount.get(pairs[i]) < minSupport) {
+                    attributeCount.remove(pairs[i]);
+                    i--;
+                }
             }
         }
 
@@ -56,8 +58,8 @@ class FPTree {
 
     public IFPTree_Node findFrequentItemSets() {
         if (results_found != null) return results_found;
-        IFPTree_Node root = new FPTree_Tree();
-        IFPTree_Node currentNode;
+        IFPTree_Node<RowColumnPair> root = new FPTree_Tree<RowColumnPair>();
+        IFPTree_Node<RowColumnPair> currentNode;
 
         //foreach row of the data
         for (String[] row : initial_orders.getRowData()) {
@@ -73,8 +75,9 @@ class FPTree {
                 if (currentNode.getNodes().containsKey(attribute)) {
                     currentNode = currentNode.getNodes().get(attribute);
                 } else {
-                    currentNode = new FPTree_Node();
-                    currentNode.getNodes().put(attribute, currentNode);
+                    FPTree_Node node = new FPTree_Node();
+                    currentNode.getNodes().put(attribute, new FPTree_Node());
+                    currentNode = node;
                 }
 
                 currentNode.setCount(currentNode.getCount() + 1);
@@ -92,8 +95,7 @@ class FPTree {
                 matchedColumns.put(attr, OrderedAttributes.get(attr));
             }
         }
+
         return SortMap.GetMapSortedByValue(matchedColumns, SortMap.SortOrder.DESC).keySet();
     }
-
-
 }
