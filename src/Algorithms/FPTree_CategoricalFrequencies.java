@@ -29,7 +29,7 @@ public class FPTree_CategoricalFrequencies {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello from ECLAT!");
+        System.out.println("Hello from FPTree!");
 
         List<Order> orders = WalmartCSVReader.GetOrders();
 
