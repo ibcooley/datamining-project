@@ -5,6 +5,7 @@ import au.com.bytecode.opencsv.CSVReader;
 import javax.swing.table.AbstractTableModel;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,8 +18,8 @@ public class OrdersTable extends AbstractTableModel {
     private List<String[]> rowData;
 
     private OrdersTable() {
-        rowData = null;
-        columnNames = null;
+        rowData = new ArrayList<String[]>();
+        columnNames = new String[]{};
     }
 
     public OrdersTable(String csvFileName) throws IOException {
@@ -31,7 +32,10 @@ public class OrdersTable extends AbstractTableModel {
             columnNames[i] = values.get(0)[i];
         }
         for (int i = 1; i < values.size(); i++) {
-            rowData.add(values.get(i));
+            String[] value = values.get(i);
+            if (value != null) {
+                rowData.add(value);
+            }
         }
     }
 
