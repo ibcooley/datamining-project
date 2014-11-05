@@ -1,9 +1,12 @@
 package Algorithms;
 
 import AlgorithmObjects.Shared.EquivalenceClass;
+import AlgorithmObjects.Shared.Itemset;
 import AlgorithmObjects.Shared.Order;
 import AlgorithmObjects.Shared.VerticalItemset;
 import Helpers.WalmartCSVReader;
+import com.sun.deploy.util.StringUtils;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -21,8 +24,16 @@ public class ECLAT {
 
     public void start() {
         List<VerticalItemset<String, String>> frequentKMinusOneItemsets = findFrequentOneItemsets();
+        frequentItemsets.addAll(frequentKMinusOneItemsets);
         EquivalenceClass<String, String> ec = new EquivalenceClass<String, String>(new ArrayList<String>(), frequentKMinusOneItemsets);
         eclatAlgorithm(ec);
+
+        for (VerticalItemset<String, String> itemset : frequentItemsets) {
+            String line = "";
+            line += String.format("%1$5s", itemset.getTransactionIDSet().size()) + ":\t";
+            line += StringUtils.join(itemset.getItemset(), ", ");
+            System.out.println(line);
+        }
     }
 
     private List<VerticalItemset<String, String>> findFrequentOneItemsets() {

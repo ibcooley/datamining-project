@@ -24,6 +24,7 @@ public class WalmartCSVReader {
 
             String orderID = nextLine[1];
             String productSubCategory = nextLine[18];
+            String previousSubCategory = "";
             if (!orderID.equalsIgnoreCase(currentOrder.getOrderID())) {
                 if (currentOrder.getOrderID().length() > 0) {
                     orders.add(currentOrder);
@@ -33,7 +34,10 @@ public class WalmartCSVReader {
             }
 
             // Always add the product to the item set
-            currentOrder.getItemSet().add(productSubCategory);
+            if (previousSubCategory != productSubCategory) {
+                currentOrder.getItemSet().add(productSubCategory);
+            }
+            previousSubCategory = productSubCategory;
         }
 
         return orders;

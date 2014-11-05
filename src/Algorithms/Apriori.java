@@ -3,6 +3,8 @@ package Algorithms;
 import AlgorithmObjects.Shared.Itemset;
 import AlgorithmObjects.Shared.Order;
 import Helpers.WalmartCSVReader;
+import com.sun.deploy.util.StringUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,12 @@ public class Apriori {
             frequentItemsets.addAll(frequentKMinusOneItemsets);
         }
 
-        System.out.println(frequentItemsets);
+        for (Itemset<String> itemset : frequentItemsets) {
+            String line = "";
+            line += String.format("%1$5s", itemset.getSupportCount()) + ":\t";
+            line += StringUtils.join(itemset.getItemSet(), ", ");
+            System.out.println(line);
+        }
     }
 
     private List<Itemset<String>> findFrequentOneItemsets() {
