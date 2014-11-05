@@ -86,8 +86,8 @@ public class FPTree {
                 if (currentNode.getNodes().containsKey(attribute)) {
                     currentNode = currentNode.getNodes().get(attribute);
                 } else {
-                    FPTree_Node node = new FPTree_Node();
-                    currentNode.getNodes().put(attribute, new FPTree_Node());
+                    FPTree_Node node = new FPTree_Node(currentNode, attribute);
+                    currentNode.getNodes().put(attribute, node);
                     currentNode = node;
                 }
 

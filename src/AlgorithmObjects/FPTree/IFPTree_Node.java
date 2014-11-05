@@ -16,4 +16,6 @@ public interface IFPTree_Node<T> {
     void setCount(int newCount);
 
     String toString(String prefix);
+
+    T getName();
 }
