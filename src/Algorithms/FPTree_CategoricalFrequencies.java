@@ -29,7 +29,7 @@ public class FPTree_CategoricalFrequencies {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Hello from ECLAT!");
+        System.out.println("Hello from FPTree!");
 
         List<Order> orders = WalmartCSVReader.GetOrders();
 
@@ -69,7 +69,7 @@ public class FPTree_CategoricalFrequencies {
     public IFPTree_Node findFrequentItemSets() {
         if (results_found != null) return results_found;
         IFPTree_Node<String> root = new FPTree_Tree<String>();
-        IFPTree_Node<String> currentNode;
+        IFPTree_Node<String> currentNode, parentNode;
 
         //foreach row of the data
         for (int i = 0; i < initial_orders.size(); i++) {
@@ -86,8 +86,8 @@ public class FPTree_CategoricalFrequencies {
                 if (currentNode.getNodes().containsKey(attribute)) {
                     currentNode = currentNode.getNodes().get(attribute);
                 } else {
-                    FPTree_Node node = new FPTree_Node();
-                    currentNode.getNodes().put(attribute, new FPTree_Node());
+                    FPTree_Node node = new FPTree_Node(currentNode, attribute);
+                    currentNode.getNodes().put(attribute, node);
                     currentNode = node;
                 }
 

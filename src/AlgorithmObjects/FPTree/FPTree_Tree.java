@@ -12,6 +12,8 @@ public class FPTree_Tree<T> implements IFPTree_Node<T> {
 
     private final HashMap<T, IFPTree_Node> Nodes;
 
+    private T name;
+
     public FPTree_Tree() {
         Nodes = new HashMap<T, IFPTree_Node>();
     }
@@ -47,9 +49,15 @@ public class FPTree_Tree<T> implements IFPTree_Node<T> {
     @Override
     public String toString(String prefix) {
         String out = "";
-        for (IFPTree_Node node : Nodes.values()) {
-            out += node.toString("");
+        List<T> keys = new ArrayList<T>(Nodes.keySet());
+        for (int i = 0; i < Nodes.size(); i++) {
+            out += Nodes.get(keys.get(i)).toString(prefix + keys.get(i).toString() + " -> ");
         }
         return out;
+    }
+
+    @Override
+    public T getName() {
+        return this.name;
     }
 }

@@ -7,6 +7,7 @@ import AlgorithmObjects.Shared.OrdersTable;
 import AlgorithmObjects.Shared.RowColumnPair;
 import Helpers.SortMap;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,16 @@ public class FPTree {
         this.initial_orders = orders;
         this.minSupport = minSupport;
         this.results_found = null;
+    }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("Hello from FPTree!");
+
+        OrdersTable table = new OrdersTable("./in/walmart.csv");
+        FPTree FP = new FPTree(table, 100);
+        FP.start();
+        IFPTree_Node<String> tree = FP.findFrequentItemSets();
+        System.out.println(tree.toString(""));
     }
 
     public void start() {
@@ -75,8 +86,8 @@ public class FPTree {
                 if (currentNode.getNodes().containsKey(attribute)) {
                     currentNode = currentNode.getNodes().get(attribute);
                 } else {
-                    FPTree_Node node = new FPTree_Node();
-                    currentNode.getNodes().put(attribute, new FPTree_Node());
+                    FPTree_Node node = new FPTree_Node(currentNode, attribute);
+                    currentNode.getNodes().put(attribute, node);
                     currentNode = node;
                 }
 
