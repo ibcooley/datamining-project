@@ -2,10 +2,9 @@ package Algorithms;
 
 import AlgorithmObjects.Shared.Itemset;
 import AlgorithmObjects.Shared.Order;
+import Helpers.TimeAndMemoryRecorder;
 import Helpers.WalmartCSVReader;
 import com.sun.deploy.util.StringUtils;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -15,23 +14,26 @@ public class Apriori {
     private List<Order> orders;
     private int minSupport;
     private int k;
+    private TimeAndMemoryRecorder recorder;
 
     public Apriori(List<Order> orders, int minSupport) {
         this.orders = orders;
         this.minSupport = minSupport;
+        recorder = new TimeAndMemoryRecorder();
     }
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("Hello World!");
-
+    public static void main(String[] args) throws Exception {
         List<Order> orders = WalmartCSVReader.GetOrders();
 
         Apriori apriori = new Apriori(orders, 5);
         apriori.start();
     }
 
-    public void start() {
+    public void start() throws Exception {
+        recorder.start();
+
         List<Itemset<String>> frequentKMinusOneItemsets = findFrequentOneItemsets();
+        recorder.poll();
         List<Itemset<String>> frequentItemsets = new ArrayList<Itemset<String>>(frequentKMinusOneItemsets);
 
         for (k = 2; frequentKMinusOneItemsets.size() != 0; k++) {
@@ -58,6 +60,8 @@ public class Apriori {
 
             frequentItemsets.addAll(frequentKMinusOneItemsets);
         }
+
+        recorder.poll();
 
         for (Itemset<String> itemset : frequentItemsets) {
             String line = "";
@@ -123,6 +127,8 @@ public class Apriori {
                     }
                 }
             }
+
+            recorder.poll();
         }
 
         return candidates;

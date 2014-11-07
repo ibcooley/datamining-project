@@ -1,13 +1,11 @@
 package Algorithms;
 
 import AlgorithmObjects.Shared.EquivalenceClass;
-import AlgorithmObjects.Shared.Itemset;
 import AlgorithmObjects.Shared.Order;
 import AlgorithmObjects.Shared.VerticalItemset;
+import Helpers.TimeAndMemoryRecorder;
 import Helpers.WalmartCSVReader;
 import com.sun.deploy.util.StringUtils;
-
-import java.io.IOException;
 import java.util.*;
 
 public class ECLAT {
@@ -15,15 +13,20 @@ public class ECLAT {
     private List<Order> orders;
     private int minSupport;
     private List<VerticalItemset<String, String>> frequentItemsets;
+    private TimeAndMemoryRecorder recorder;
 
     public ECLAT(List<Order> orders, int minSupport) {
         this.orders = orders;
         this.minSupport = minSupport;
         frequentItemsets = new ArrayList<VerticalItemset<String, String>>();
+        recorder = new TimeAndMemoryRecorder();
     }
 
-    public void start() {
+    public void start() throws Exception {
+        recorder.start();
+
         List<VerticalItemset<String, String>> frequentKMinusOneItemsets = findFrequentOneItemsets();
+        recorder.poll();
         frequentItemsets.addAll(frequentKMinusOneItemsets);
         EquivalenceClass<String, String> ec = new EquivalenceClass<String, String>(new ArrayList<String>(), frequentKMinusOneItemsets);
         eclatAlgorithm(ec);
@@ -95,6 +98,8 @@ public class ECLAT {
                 eclatAlgorithm(ecPrime);
             }
         }
+
+        recorder.poll();
     }
 
     public <T> List<T> union(List<T> list1, List<T> list2) {
@@ -114,9 +119,7 @@ public class ECLAT {
         return list;
     }
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("Hello from ECLAT!");
-
+    public static void main(String[] args) throws Exception {
         List<Order> orders = WalmartCSVReader.GetOrders();
 
         ECLAT eclat = new ECLAT(orders, 5);
