@@ -10,12 +10,14 @@ import java.util.List;
 public class WalmartCSVReader {
 
     public static List<Order> GetOrders() throws IOException {
-        CSVReader reader = new CSVReader(new FileReader("./in/walmart.csv"));
+        CSVReader reader = new CSVReader(new FileReader("./in/walmart_sorted.csv"));
         String[] nextLine;
-        nextLine = reader.readNext(); // header
+        reader.readNext(); // header
 
         List<Order> orders = new ArrayList<Order>();
         Order currentOrder = new Order();
+
+        String previousSubCategory = "";
         while ((nextLine = reader.readNext()) != null) {
             // 1 - Order ID
             // 18 - Product Sub-Category
@@ -24,17 +26,17 @@ public class WalmartCSVReader {
 
             String orderID = nextLine[1];
             String productSubCategory = nextLine[18];
-            String previousSubCategory = "";
             if (!orderID.equalsIgnoreCase(currentOrder.getOrderID())) {
                 if (currentOrder.getOrderID().length() > 0) {
+                    previousSubCategory = "";
                     orders.add(currentOrder);
                 }
                 currentOrder = new Order();
                 currentOrder.setOrderID(orderID);
             }
 
-            // Always add the product to the item set
-            if (previousSubCategory != productSubCategory) {
+            // Add the product to the item set if it wasn't just added
+            if (!previousSubCategory.equalsIgnoreCase(productSubCategory)) {
                 currentOrder.getItemSet().add(productSubCategory);
             }
             previousSubCategory = productSubCategory;
