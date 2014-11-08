@@ -1,0 +1,167 @@
+  423:	Appliances
+  868:	Binders and Binder Accessories
+  188:	Bookcases
+  375:	Chairs & Chairmats
+  731:	Computer Peripherals
+   87:	Copiers and Fax
+  244:	Envelopes
+  285:	Labels
+  757:	Office Furnishings
+  333:	Office Machines
+ 1150:	Paper
+  607:	Pens & Art Supplies
+  178:	Rubber Bands
+  144:	Scissors, Rulers and Trimmers
+  537:	Storage & Organization
+  354:	Tables
+  840:	Telephones and Communication
+   42:	Appliances, Binders and Binder Accessories
+    9:	Appliances, Bookcases
+   21:	Appliances, Chairs & Chairmats
+   33:	Appliances, Computer Peripherals
+    6:	Appliances, Copiers and Fax
+   21:	Appliances, Envelopes
+   15:	Appliances, Labels
+   47:	Appliances, Office Furnishings
+   18:	Appliances, Office Machines
+   46:	Appliances, Paper
+   28:	Appliances, Pens & Art Supplies
+    6:	Appliances, Rubber Bands
+    7:	Appliances, Scissors, Rulers and Trimmers
+   22:	Appliances, Storage & Organization
+   16:	Appliances, Tables
+   39:	Appliances, Telephones and Communication
+    6:	Appliances, Binders and Binder Accessories, Telephones and Communication
+    5:	Appliances, Computer Peripherals, Paper
+    7:	Appliances, Office Furnishings, Paper
+   20:	Binders and Binder Accessories, Bookcases
+   35:	Binders and Binder Accessories, Chairs & Chairmats
+   58:	Binders and Binder Accessories, Computer Peripherals
+    9:	Binders and Binder Accessories, Copiers and Fax
+   22:	Binders and Binder Accessories, Envelopes
+   31:	Binders and Binder Accessories, Labels
+   80:	Binders and Binder Accessories, Office Furnishings
+   26:	Binders and Binder Accessories, Office Machines
+   97:	Binders and Binder Accessories, Paper
+   51:	Binders and Binder Accessories, Pens & Art Supplies
+   22:	Binders and Binder Accessories, Rubber Bands
+   10:	Binders and Binder Accessories, Scissors, Rulers and Trimmers
+   41:	Binders and Binder Accessories, Storage & Organization
+   29:	Binders and Binder Accessories, Tables
+   72:	Binders and Binder Accessories, Telephones and Communication
+    7:	Binders and Binder Accessories, Chairs & Chairmats, Office Furnishings
+   10:	Binders and Binder Accessories, Computer Peripherals, Office Furnishings
+    9:	Binders and Binder Accessories, Computer Peripherals, Telephones and Communication
+    5:	Binders and Binder Accessories, Labels, Paper
+    9:	Binders and Binder Accessories, Office Furnishings, Paper
+    7:	Binders and Binder Accessories, Office Furnishings, Telephones and Communication
+    8:	Binders and Binder Accessories, Paper, Pens & Art Supplies
+    6:	Binders and Binder Accessories, Paper, Storage & Organization
+    6:	Binders and Binder Accessories, Paper, Telephones and Communication
+    8:	Binders and Binder Accessories, Pens & Art Supplies, Storage & Organization
+    5:	Binders and Binder Accessories, Storage & Organization, Telephones and Communication
+    8:	Bookcases, Chairs & Chairmats
+   16:	Bookcases, Computer Peripherals
+    5:	Bookcases, Copiers and Fax
+    6:	Bookcases, Envelopes
+    7:	Bookcases, Labels
+   22:	Bookcases, Office Furnishings
+    7:	Bookcases, Office Machines
+   24:	Bookcases, Paper
+    7:	Bookcases, Pens & Art Supplies
+   12:	Bookcases, Storage & Organization
+   11:	Bookcases, Tables
+   18:	Bookcases, Telephones and Communication
+   35:	Chairs & Chairmats, Computer Peripherals
+    8:	Chairs & Chairmats, Envelopes
+    8:	Chairs & Chairmats, Labels
+   35:	Chairs & Chairmats, Office Furnishings
+   15:	Chairs & Chairmats, Office Machines
+   44:	Chairs & Chairmats, Paper
+   23:	Chairs & Chairmats, Pens & Art Supplies
+   11:	Chairs & Chairmats, Rubber Bands
+    7:	Chairs & Chairmats, Scissors, Rulers and Trimmers
+   25:	Chairs & Chairmats, Storage & Organization
+   15:	Chairs & Chairmats, Tables
+   30:	Chairs & Chairmats, Telephones and Communication
+    6:	Chairs & Chairmats, Computer Peripherals, Paper
+    5:	Computer Peripherals, Copiers and Fax
+   14:	Computer Peripherals, Envelopes
+   22:	Computer Peripherals, Labels
+   57:	Computer Peripherals, Office Furnishings
+   20:	Computer Peripherals, Office Machines
+  103:	Computer Peripherals, Paper
+   41:	Computer Peripherals, Pens & Art Supplies
+   13:	Computer Peripherals, Rubber Bands
+   12:	Computer Peripherals, Scissors, Rulers and Trimmers
+   49:	Computer Peripherals, Storage & Organization
+   22:	Computer Peripherals, Tables
+   76:	Computer Peripherals, Telephones and Communication
+    6:	Computer Peripherals, Office Furnishings, Paper
+   10:	Computer Peripherals, Office Furnishings, Telephones and Communication
+    5:	Computer Peripherals, Paper, Pens & Art Supplies
+    5:	Computer Peripherals, Paper, Storage & Organization
+   14:	Computer Peripherals, Paper, Telephones and Communication
+    5:	Computer Peripherals, Storage & Organization, Telephones and Communication
+   11:	Copiers and Fax, Office Furnishings
+   16:	Copiers and Fax, Paper
+    9:	Copiers and Fax, Pens & Art Supplies
+    8:	Copiers and Fax, Storage & Organization
+    7:	Copiers and Fax, Telephones and Communication
+    5:	Envelopes, Labels
+   23:	Envelopes, Office Furnishings
+   10:	Envelopes, Office Machines
+   24:	Envelopes, Paper
+   22:	Envelopes, Pens & Art Supplies
+    9:	Envelopes, Storage & Organization
+    8:	Envelopes, Tables
+   15:	Envelopes, Telephones and Communication
+   20:	Labels, Office Furnishings
+   38:	Labels, Paper
+   19:	Labels, Pens & Art Supplies
+    8:	Labels, Rubber Bands
+   21:	Labels, Storage & Organization
+   12:	Labels, Tables
+   26:	Labels, Telephones and Communication
+   27:	Office Furnishings, Office Machines
+   88:	Office Furnishings, Paper
+   43:	Office Furnishings, Pens & Art Supplies
+   22:	Office Furnishings, Rubber Bands
+    7:	Office Furnishings, Scissors, Rulers and Trimmers
+   41:	Office Furnishings, Storage & Organization
+   27:	Office Furnishings, Tables
+   81:	Office Furnishings, Telephones and Communication
+    5:	Office Furnishings, Paper, Storage & Organization
+    9:	Office Furnishings, Paper, Telephones and Communication
+    5:	Office Furnishings, Pens & Art Supplies, Telephones and Communication
+   49:	Office Machines, Paper
+   20:	Office Machines, Pens & Art Supplies
+    6:	Office Machines, Scissors, Rulers and Trimmers
+   27:	Office Machines, Storage & Organization
+   10:	Office Machines, Tables
+   24:	Office Machines, Telephones and Communication
+    6:	Office Machines, Paper, Storage & Organization
+   75:	Paper, Pens & Art Supplies
+   18:	Paper, Rubber Bands
+   27:	Paper, Scissors, Rulers and Trimmers
+   74:	Paper, Storage & Organization
+   43:	Paper, Tables
+  106:	Paper, Telephones and Communication
+    5:	Paper, Pens & Art Supplies, Storage & Organization
+    5:	Paper, Pens & Art Supplies, Tables
+    6:	Paper, Tables, Telephones and Communication
+   15:	Pens & Art Supplies, Rubber Bands
+   13:	Pens & Art Supplies, Scissors, Rulers and Trimmers
+   36:	Pens & Art Supplies, Storage & Organization
+   21:	Pens & Art Supplies, Tables
+   49:	Pens & Art Supplies, Telephones and Communication
+    5:	Pens & Art Supplies, Storage & Organization, Telephones and Communication
+   16:	Rubber Bands, Storage & Organization
+    7:	Rubber Bands, Tables
+   22:	Rubber Bands, Telephones and Communication
+   10:	Scissors, Rulers and Trimmers, Storage & Organization
+    6:	Scissors, Rulers and Trimmers, Tables
+   13:	Scissors, Rulers and Trimmers, Telephones and Communication
+   19:	Storage & Organization, Tables
+   52:	Storage & Organization, Telephones and Communication
+   32:	Tables, Telephones and Communication

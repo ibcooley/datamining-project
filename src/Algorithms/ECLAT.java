@@ -6,6 +6,8 @@ import AlgorithmObjects.Shared.VerticalItemset;
 import Helpers.TimeAndMemoryRecorder;
 import Helpers.WalmartCSVReader;
 import com.sun.deploy.util.StringUtils;
+
+import java.io.PrintWriter;
 import java.util.*;
 
 public class ECLAT {
@@ -26,17 +28,30 @@ public class ECLAT {
         recorder.start();
 
         List<VerticalItemset<String, String>> frequentKMinusOneItemsets = findFrequentOneItemsets();
-        recorder.poll();
         frequentItemsets.addAll(frequentKMinusOneItemsets);
+        recorder.poll(frequentItemsets.size());
         EquivalenceClass<String, String> ec = new EquivalenceClass<String, String>(new ArrayList<String>(), frequentKMinusOneItemsets);
         eclatAlgorithm(ec);
 
+        String frequentItemsetResults = "";
         for (VerticalItemset<String, String> itemset : frequentItemsets) {
             String line = "";
             line += String.format("%1$5s", itemset.getTransactionIDSet().size()) + ":\t";
-            line += StringUtils.join(itemset.getItemset(), ", ");
-            System.out.println(line);
+            line += StringUtils.join(itemset.getItemset(), ", ") + "\n";
+            frequentItemsetResults += line;
         }
+        PrintWriter pw = new PrintWriter("eclat_frequent_itemsets.txt");
+        pw.print(frequentItemsetResults);
+        pw.close();
+
+        String timeMemoryResults = "elapsed time, used memory, frequent itemset count\n";
+        for (int i = 0; i < recorder.getTimes().size(); i++) {
+            String line = recorder.getTimes().get(i) + ", " + recorder.getMemories().get(i) + ", " + recorder.getFrequentItemsetCounts().get(i) + "\n";
+            timeMemoryResults += line;
+        }
+        PrintWriter pw2 = new PrintWriter("eclat_time_memory_results.txt");
+        pw2.print(timeMemoryResults);
+        pw2.close();
     }
 
     private List<VerticalItemset<String, String>> findFrequentOneItemsets() {
@@ -76,7 +91,6 @@ public class ECLAT {
 
             List<String> p = new ArrayList<String>(ec.getPrefix());
             p = union(p, vItemset1.getItemset());
-            Collections.sort(p);
 
             EquivalenceClass<String, String> ecPrime = new EquivalenceClass<String, String>(p);
 
@@ -88,7 +102,6 @@ public class ECLAT {
                     newVItemset.getItemset().addAll(p);
                     newVItemset.getItemset().add(vItemset2.getItemset().get(vItemset2.getItemset().size() - 1));
                     newVItemset.getTransactionIDSet().addAll(tmpT);
-                    Collections.sort(newVItemset.getItemset());
                     ecPrime.getVerticalItemsets().add(newVItemset);
                     frequentItemsets.add(newVItemset);
                 }
@@ -99,11 +112,11 @@ public class ECLAT {
             }
         }
 
-        recorder.poll();
+        recorder.poll(frequentItemsets.size());
     }
 
     public <T> List<T> union(List<T> list1, List<T> list2) {
-        Set<T> set = new HashSet<T>();
+        Set<T> set = new TreeSet<T>();
         set.addAll(list1);
         set.addAll(list2);
         return new ArrayList<T>(set);

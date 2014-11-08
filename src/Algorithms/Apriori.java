@@ -5,6 +5,8 @@ import AlgorithmObjects.Shared.Order;
 import Helpers.TimeAndMemoryRecorder;
 import Helpers.WalmartCSVReader;
 import com.sun.deploy.util.StringUtils;
+
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -15,16 +17,17 @@ public class Apriori {
     private int minSupport;
     private int k;
     private TimeAndMemoryRecorder recorder;
+    private List<Itemset<String>> frequentItemsets;
 
     public Apriori(List<Order> orders, int minSupport) {
         this.orders = orders;
         this.minSupport = minSupport;
         recorder = new TimeAndMemoryRecorder();
+        frequentItemsets = new  ArrayList<Itemset<String>>();
     }
 
     public static void main(String[] args) throws Exception {
         List<Order> orders = WalmartCSVReader.GetOrders();
-
         Apriori apriori = new Apriori(orders, 5);
         apriori.start();
     }
@@ -33,8 +36,8 @@ public class Apriori {
         recorder.start();
 
         List<Itemset<String>> frequentKMinusOneItemsets = findFrequentOneItemsets();
-        recorder.poll();
-        List<Itemset<String>> frequentItemsets = new ArrayList<Itemset<String>>(frequentKMinusOneItemsets);
+        frequentItemsets.addAll(frequentKMinusOneItemsets);
+        recorder.poll(frequentItemsets.size());
 
         for (k = 2; frequentKMinusOneItemsets.size() != 0; k++) {
             List<Itemset<String>> c_k = aprioriGen(frequentKMinusOneItemsets);
@@ -61,14 +64,27 @@ public class Apriori {
             frequentItemsets.addAll(frequentKMinusOneItemsets);
         }
 
-        recorder.poll();
+        recorder.poll(frequentItemsets.size());
 
+        String frequentItemsetResults = "";
         for (Itemset<String> itemset : frequentItemsets) {
             String line = "";
             line += String.format("%1$5s", itemset.getSupportCount()) + ":\t";
-            line += StringUtils.join(itemset.getItemSet(), ", ");
-            System.out.println(line);
+            line += StringUtils.join(itemset.getItemSet(), ", ") + "\n";
+            frequentItemsetResults += line;
         }
+        PrintWriter pw = new PrintWriter("apriori_frequent_itemsets.txt");
+        pw.print(frequentItemsetResults);
+        pw.close();
+
+        String timeMemoryResults = "elapsed time, used memory, frequent itemset count\n";
+        for (int i = 0; i < recorder.getTimes().size(); i++) {
+            String line = recorder.getTimes().get(i) + ", " + recorder.getMemories().get(i) + ", " + recorder.getFrequentItemsetCounts().get(i) + "\n";
+            timeMemoryResults += line;
+        }
+        PrintWriter pw2 = new PrintWriter("apriori_time_memory_results.txt");
+        pw2.print(timeMemoryResults);
+        pw2.close();
     }
 
     private List<Itemset<String>> findFrequentOneItemsets() {
@@ -128,7 +144,7 @@ public class Apriori {
                 }
             }
 
-            recorder.poll();
+            recorder.poll(frequentItemsets.size());
         }
 
         return candidates;
