@@ -1,5 +1,7 @@
 package AlgorithmObjects.FPTree;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -7,7 +9,6 @@ import java.util.Map;
  * IFPTree_Node
  */
 public interface IFPTree_Node<T> {
-    void Prune(int minSupport);
 
     Map<T, IFPTree_Node> getNodes();
 
@@ -15,7 +16,17 @@ public interface IFPTree_Node<T> {
 
     void setCount(int newCount);
 
-    String toString(String prefix);
+    int getPatternCount ();
 
     T getName();
+
+    IFPTree_Node<T> getLink ();
+
+    void setLink (IFPTree_Node<T> link);
+
+    IFPTree_Node<T> getParent ();
+
+    HashMap<LinkedList<IFPTree_Node<T>>, Integer> getAncestors ();
+
+    void updateCount ();
 }

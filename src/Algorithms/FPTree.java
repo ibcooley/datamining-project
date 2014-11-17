@@ -6,8 +6,9 @@ import AlgorithmObjects.FPTree.IFPTree_Node;
 import AlgorithmObjects.Shared.OrdersTable;
 import AlgorithmObjects.Shared.RowColumnPair;
 import Helpers.SortMap;
+import Helpers.TimeAndMemoryRecorder;
 
-import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,24 +24,45 @@ public class FPTree {
     private final int minSupport;
     private Map<RowColumnPair, Integer> OrderedAttributes;
     private FPTree_Tree results_found;
+    private TimeAndMemoryRecorder recorder;
 
     public FPTree(OrdersTable orders, int minSupport) {
         this.initial_orders = orders;
         this.minSupport = minSupport;
         this.results_found = null;
+        recorder = new TimeAndMemoryRecorder();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main (String[] args) throws Exception {
         System.out.println("Hello from FPTree!");
 
-        OrdersTable table = new OrdersTable("./in/walmart.csv");
-        FPTree FP = new FPTree(table, 100);
+        OrdersTable table = new OrdersTable("./in/walmart_sorted.csv");
+        FPTree FP = new FPTree(table, 200);
         FP.start();
-        IFPTree_Node<String> tree = FP.findFrequentItemSets();
-        System.out.println(tree.toString(""));
+        FPTree_Tree<String> tree = FP.findFrequentItemSets();
+
+        PrintWriter pw = new PrintWriter("FPTree_frequent_itemsets.txt");
+        pw.print(tree.toString(200));
+        pw.close();
+
+        String timeMemoryResults = "elapsed time, used memory, frequent itemset count\n";
+        for (int i = 0; i < FP.recorder.getTimes().size(); i++) {
+            String line = FP.recorder.getTimes().get(i) + ", " + FP.recorder.getMemories().get(i) + ", " + FP.recorder.getFrequentItemsetCounts().get(i) + "\n";
+            timeMemoryResults += line;
+        }
+
+        PrintWriter pw2 = new PrintWriter("FPTree_time_memory_results.txt");
+        pw2.print(timeMemoryResults);
+        pw2.close();
+        System.out.println(tree.toString(200));
     }
 
-    public void start() {
+    public TimeAndMemoryRecorder getRecorder () {
+        return recorder;
+    }
+
+    public void start () throws Exception {
+        this.recorder.start();
         Map<RowColumnPair, Integer> attributeCount = new HashMap<RowColumnPair, Integer>();
         for (int i = 0; i < initial_orders.getColumnCount(); i++) {
             for (int j = 0; j < initial_orders.getRowCount(); j++) {
@@ -57,7 +79,7 @@ public class FPTree {
         RowColumnPair[] pairs = attributeCount.keySet().toArray(new RowColumnPair[attributeCount.keySet().size()]);
         for (int i = 0; i < pairs.length; i++) {
             if (attributeCount.containsKey(pairs[i])) {
-                if (attributeCount.get(pairs[i]) < minSupport) {
+                if (attributeCount.get(pairs[i]) <= minSupport) {
                     attributeCount.remove(pairs[i]);
                     i--;
                 }
@@ -65,11 +87,12 @@ public class FPTree {
         }
 
         OrderedAttributes = SortMap.GetMapSortedByValue(attributeCount, SortMap.SortOrder.DESC);
+        recorder.poll(0);
     }
 
-    public IFPTree_Node findFrequentItemSets() {
+    public FPTree_Tree findFrequentItemSets () {
         if (results_found != null) return results_found;
-        IFPTree_Node<RowColumnPair> root = new FPTree_Tree<RowColumnPair>();
+        FPTree_Tree<RowColumnPair> root = new FPTree_Tree<RowColumnPair>();
         IFPTree_Node<RowColumnPair> currentNode;
 
         //foreach row of the data
@@ -86,15 +109,20 @@ public class FPTree {
                 if (currentNode.getNodes().containsKey(attribute)) {
                     currentNode = currentNode.getNodes().get(attribute);
                 } else {
-                    FPTree_Node node = new FPTree_Node(currentNode, attribute);
+                    FPTree_Node node = new FPTree_Node(root, currentNode, attribute);
                     currentNode.getNodes().put(attribute, node);
                     currentNode = node;
+                    root.fixNodes(currentNode);
+                    recorder.poll(root.getPatternCount());
                 }
 
-                currentNode.setCount(currentNode.getCount() + 1);
+
             }
+            if (currentNode != null) {
+                currentNode.updateCount();
+            }
+
         }
-        root.Prune(minSupport);
         return root;
     }
 

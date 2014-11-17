@@ -26,6 +26,26 @@ public class SortMap {
         return sortedMap;
     }
 
+    public static <K, V extends Comparable<V>> Map<K, V> GetMapSortedByKey (Map<K, V> initialMap, final SortOrder order) {
+        List<Map.Entry<K, V>> list = new LinkedList(initialMap.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+            public int compare (Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                if (order == SortMap.SortOrder.ASC) {
+                    return ((Comparable) o1.getKey()).compareTo(o2.getKey());
+                }
+                return ((Comparable) o2.getKey()).compareTo(o1.getKey());
+            }
+        });
+        Map<K, V> sortedMap = new LinkedHashMap();
+        for (Map.Entry<K, V> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
+
+
+
     public static enum SortOrder {
         ASC, DESC;
 

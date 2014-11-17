@@ -5,9 +5,10 @@ import AlgorithmObjects.FPTree.FPTree_Tree;
 import AlgorithmObjects.FPTree.IFPTree_Node;
 import AlgorithmObjects.Shared.Order;
 import Helpers.SortMap;
+import Helpers.TimeAndMemoryRecorder;
 import Helpers.WalmartCSVReader;
 
-import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -21,25 +22,43 @@ public class FPTree_CategoricalFrequencies {
     private final int minSupport;
     private Map<String, Integer> OrderedAttributes;
     private FPTree_Tree results_found;
+    private TimeAndMemoryRecorder recorder;
 
     public FPTree_CategoricalFrequencies(List<Order> orders, int minSupport) {
         this.initial_orders = orders;
         this.minSupport = minSupport;
         this.results_found = null;
+        recorder = new TimeAndMemoryRecorder();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main (String[] args) throws Exception {
         System.out.println("Hello from FPTree!");
 
         List<Order> orders = WalmartCSVReader.GetOrders();
 
         FPTree_CategoricalFrequencies FP = new FPTree_CategoricalFrequencies(orders, 5);
         FP.start();
-        IFPTree_Node<String> tree = FP.findFrequentItemSets();
-        System.out.println(tree.toString(""));
+        FPTree_Tree<String> tree = FP.createFPTree();
+
+        FP.recorder.poll(tree.getFrequestItemSets(5).size());
+        PrintWriter pw = new PrintWriter("FPTree_frequent_itemsets.txt");
+        pw.print(tree.toString(5));
+        pw.close();
+
+        String timeMemoryResults = "elapsed time, used memory, frequent itemset count\n";
+        for (int i = 0; i < FP.recorder.getTimes().size(); i++) {
+            String line = FP.recorder.getTimes().get(i) + ", " + FP.recorder.getMemories().get(i) + ", " + FP.recorder.getFrequentItemsetCounts().get(i) + "\n";
+            timeMemoryResults += line;
+        }
+
+        PrintWriter pw2 = new PrintWriter("FPTree_time_memory_results.txt");
+        pw2.print(timeMemoryResults);
+        pw2.close();
+        System.out.println(tree.toString(5));
     }
 
-    public void start() {
+    public void start () throws Exception {
+        this.recorder.start();
         Map<String, Integer> attributeCount = new HashMap<String, Integer>();
         for (int i = 0; i < initial_orders.size(); i++) {
             List<String> items = initial_orders.get(i).getItemSet();
@@ -64,21 +83,20 @@ public class FPTree_CategoricalFrequencies {
         }
 
         OrderedAttributes = SortMap.GetMapSortedByValue(attributeCount, SortMap.SortOrder.DESC);
+        this.recorder.poll(0);
     }
 
-    public IFPTree_Node findFrequentItemSets() {
+    public FPTree_Tree<String> createFPTree () {
         if (results_found != null) return results_found;
-        IFPTree_Node<String> root = new FPTree_Tree<String>();
-        IFPTree_Node<String> currentNode, parentNode;
-
+        FPTree_Tree<String> root = new FPTree_Tree<String>();
+        IFPTree_Node<String> currentNode;
         //foreach row of the data
         for (int i = 0; i < initial_orders.size(); i++) {
             List<String> row = initial_orders.get(i).getItemSet();
             ArrayList<String> orderedRowAttributes = new ArrayList<String>(GetOrderedAttributesForRow(row));
             currentNode = null;
-
-            for (String attribute : orderedRowAttributes) {
-
+            for (int j = 0; j < orderedRowAttributes.size(); j++) {
+                String attribute = orderedRowAttributes.get(j);
                 //if null, set root as currentNode.
                 if (currentNode == null) {
                     currentNode = root;
@@ -86,15 +104,16 @@ public class FPTree_CategoricalFrequencies {
                 if (currentNode.getNodes().containsKey(attribute)) {
                     currentNode = currentNode.getNodes().get(attribute);
                 } else {
-                    FPTree_Node node = new FPTree_Node(currentNode, attribute);
+                    FPTree_Node node = new FPTree_Node(root, currentNode, attribute);
                     currentNode.getNodes().put(attribute, node);
                     currentNode = node;
+                    root.fixNodes(currentNode);
+                    recorder.poll(root.getPatternCount());
                 }
-
-                currentNode.setCount(currentNode.getCount() + 1);
             }
+            currentNode.updateCount();
         }
-        root.Prune(minSupport);
+        recorder.poll(root.getPatternCount());
         return root;
     }
 
