@@ -1,6 +1,8 @@
 package AlgorithmObjects.FPTree;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -28,14 +30,43 @@ public class FPTree_Node<T> implements IFPTree_Node<T> {
     @Override
     public HashMap<LinkedList<IFPTree_Node<T>>, Integer> getAncestors () {
         HashMap<LinkedList<IFPTree_Node<T>>, Integer> ancestors = new HashMap<LinkedList<IFPTree_Node<T>>, Integer>();
-        LinkedList<IFPTree_Node<T>> items = new LinkedList<IFPTree_Node<T>>();
-        IFPTree_Node<T> ancestor = this;
 
-        while (ancestor != null) {
-            items.addFirst(ancestor);
-            ancestors.put(new LinkedList<IFPTree_Node<T>>(items), this.getCount());
-            ancestor = ancestor.getParent();
+        Collection<LinkedList<IFPTree_Node<T>>> items = getAncestors(this);
+
+        for (LinkedList<IFPTree_Node<T>> list : items) {
+            if (list.size() > 0) {
+                ancestors.put(list, this.getCount());
+            }
         }
+        return ancestors;
+    }
+
+    private Collection<LinkedList<IFPTree_Node<T>>> getAncestors(IFPTree_Node<T> node) {
+        HashSet<LinkedList<IFPTree_Node<T>>> ancestors = new HashSet<LinkedList<IFPTree_Node<T>>>();
+        LinkedList<IFPTree_Node<T>> items = new LinkedList<IFPTree_Node<T>>();
+
+        if (node != null) {
+            IFPTree_Node<T> ancestor = node;
+            while (ancestor != null) {
+                items.addFirst(ancestor);
+                if (node == this)
+                    ancestors.add(new LinkedList<IFPTree_Node<T>>(items));
+                ancestor = ancestor.getParent();
+            }
+            if (node != this) {
+                ancestors.add(new LinkedList<IFPTree_Node<T>>(items));
+            }
+
+            // Collection<LinkedList<IFPTree_Node<T>>> lists = getAncestors(node.getParent());
+
+            //for (LinkedList<IFPTree_Node<T>> list : lists) {
+            //    if (list.size() > 0) {
+            //        ancestors.add(list);
+            //    }
+            //}
+        }
+
+
         return ancestors;
     }
 

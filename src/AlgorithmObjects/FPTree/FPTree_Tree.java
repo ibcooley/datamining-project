@@ -57,8 +57,8 @@ public class FPTree_Tree<T> implements IFPTree_Node<T> {
 	}
 
 	public String toString (int minSupport) {
-		Map<String, Integer> items = SortMap.GetMapSortedByKey(getFrequestItemSets(), SortMap.SortOrder.ASC);
-		String ret = "";
+        Map<String, Integer> items = SortMap.GetMapSortedByKey(getFrequestItemSets(minSupport), SortMap.SortOrder.ASC);
+        String ret = "";
 
 		for (String name : items.keySet()) {
 			if (items.get(name) >= minSupport) {

@@ -31,7 +31,7 @@ public class FPTree_CategoricalFrequencies {
         recorder = new TimeAndMemoryRecorder();
     }
 
-    public static void main (String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         System.out.println("Hello from FPTree!");
 
         List<Order> orders = WalmartCSVReader.GetOrders();
@@ -54,10 +54,9 @@ public class FPTree_CategoricalFrequencies {
         PrintWriter pw2 = new PrintWriter("FPTree_time_memory_results.txt");
         pw2.print(timeMemoryResults);
         pw2.close();
-        System.out.println(tree.toString(5));
     }
 
-    public void start () throws Exception {
+    public void start() throws Exception {
         this.recorder.start();
         Map<String, Integer> attributeCount = new HashMap<String, Integer>();
         for (int i = 0; i < initial_orders.size(); i++) {
@@ -86,7 +85,7 @@ public class FPTree_CategoricalFrequencies {
         this.recorder.poll(0);
     }
 
-    public FPTree_Tree<String> createFPTree () {
+    public FPTree_Tree<String> createFPTree() {
         if (results_found != null) return results_found;
         FPTree_Tree<String> root = new FPTree_Tree<String>();
         IFPTree_Node<String> currentNode;
