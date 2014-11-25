@@ -1,7 +1,10 @@
 package Algorithms;
 
+import AlgorithmObjects.Shared.Association;
+import AlgorithmObjects.Shared.AssociationFinder;
 import AlgorithmObjects.Shared.Itemset;
 import AlgorithmObjects.Shared.Order;
+import Helpers.ListHelpers;
 import Helpers.TimeAndMemoryRecorder;
 import Helpers.WalmartCSVReader;
 import com.sun.deploy.util.StringUtils;
@@ -85,6 +88,10 @@ public class Apriori {
         PrintWriter pw2 = new PrintWriter("apriori_time_memory_results.txt");
         pw2.print(timeMemoryResults);
         pw2.close();
+
+        AssociationFinder associationFinder = new AssociationFinder(orders, .10); // 10% min confidence
+        associationFinder.find(frequentItemsets);
+        associationFinder.printToFile();
     }
 
     private List<Itemset<String>> findFrequentOneItemsets() {
@@ -151,7 +158,7 @@ public class Apriori {
     }
 
     private boolean hasInfrequentSubset(Itemset<String> c, List<Itemset<String>> frequentKMinusOneItemsets) {
-        List<List<String>> kMinusOneSubsets = getSubsets(c.getItemSet(), k - 1);
+        List<List<String>> kMinusOneSubsets = ListHelpers.getSubsets(c.getItemSet(), k - 1);
         for (List<String> subset : kMinusOneSubsets) {
             boolean found = false;
             for (Itemset<String> itemset : frequentKMinusOneItemsets) {
@@ -164,30 +171,6 @@ public class Apriori {
             }
         }
         return false;
-    }
-
-    // http://stackoverflow.com/questions/12548312/find-all-subsets-of-length-k-in-an-array
-    private void getSubsets(List<String> superSet, int k, int idx, List<String> current, List<List<String>> solution) {
-        //successful stop clause
-        if (current.size() == k) {
-            solution.add(new ArrayList<String>(current));
-            return;
-        }
-        //unsuccessful stop clause
-        if (idx == superSet.size()) return;
-        String x = superSet.get(idx);
-        current.add(x);
-        //"guess" x is in the subset
-        getSubsets(superSet, k, idx + 1, current, solution);
-        current.remove(x);
-        //"guess" x is not in the subset
-        getSubsets(superSet, k, idx + 1, current, solution);
-    }
-
-    private List<List<String>> getSubsets(List<String> superSet, int k) {
-        List<List<String>> res = new ArrayList<List<String>>();
-        getSubsets(superSet, k, 0, new ArrayList<String>(), res);
-        return res;
     }
 }
 
