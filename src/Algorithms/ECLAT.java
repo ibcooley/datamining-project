@@ -3,6 +3,7 @@ package Algorithms;
 import AlgorithmObjects.Shared.EquivalenceClass;
 import AlgorithmObjects.Shared.Order;
 import AlgorithmObjects.Shared.VerticalItemset;
+import Helpers.ListHelpers;
 import Helpers.TimeAndMemoryRecorder;
 import Helpers.WalmartCSVReader;
 import com.sun.deploy.util.StringUtils;
@@ -90,13 +91,13 @@ public class ECLAT {
             VerticalItemset<String, String> vItemset1 = ec.getVerticalItemsets().get(i);
 
             List<String> p = new ArrayList<String>(ec.getPrefix());
-            p = union(p, vItemset1.getItemset());
+            p = ListHelpers.union(p, vItemset1.getItemset());
 
             EquivalenceClass<String, String> ecPrime = new EquivalenceClass<String, String>(p);
 
             for (int j = i + 1; j < ec.getVerticalItemsets().size(); j++) {
                 VerticalItemset<String, String> vItemset2 = ec.getVerticalItemsets().get(j);
-                List<String> tmpT = intersection(vItemset1.getTransactionIDSet(), vItemset2.getTransactionIDSet());
+                List<String> tmpT = ListHelpers.intersection(vItemset1.getTransactionIDSet(), vItemset2.getTransactionIDSet());
                 if (tmpT.size() >= minSupport) {
                     VerticalItemset<String, String> newVItemset = new VerticalItemset<String, String>();
                     newVItemset.getItemset().addAll(p);
@@ -113,23 +114,6 @@ public class ECLAT {
         }
 
         recorder.poll(frequentItemsets.size());
-    }
-
-    public <T> List<T> union(List<T> list1, List<T> list2) {
-        Set<T> set = new TreeSet<T>();
-        set.addAll(list1);
-        set.addAll(list2);
-        return new ArrayList<T>(set);
-    }
-
-    public <T> List<T> intersection(List<T> list1, List<T> list2) {
-        List<T> list = new ArrayList<T>();
-        for (T t : list1) {
-            if(list2.contains(t)) {
-                list.add(t);
-            }
-        }
-        return list;
     }
 
     public static void main(String[] args) throws Exception {
